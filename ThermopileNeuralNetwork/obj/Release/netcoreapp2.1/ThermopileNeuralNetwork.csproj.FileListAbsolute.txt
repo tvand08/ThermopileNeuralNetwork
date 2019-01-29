@@ -1,0 +1,11 @@
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\bin\Release\netcoreapp2.1\ThermopileNeuralNetwork.deps.json
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\bin\Release\netcoreapp2.1\ThermopileNeuralNetwork.runtimeconfig.json
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\bin\Release\netcoreapp2.1\ThermopileNeuralNetwork.runtimeconfig.dev.json
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\bin\Release\netcoreapp2.1\ThermopileNeuralNetwork.dll
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\bin\Release\netcoreapp2.1\ThermopileNeuralNetwork.pdb
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\obj\Release\netcoreapp2.1\ThermopileNeuralNetwork.csprojAssemblyReference.cache
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\obj\Release\netcoreapp2.1\ThermopileNeuralNetwork.csproj.CoreCompileInputs.cache
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\obj\Release\netcoreapp2.1\ThermopileNeuralNetwork.AssemblyInfoInputs.cache
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\obj\Release\netcoreapp2.1\ThermopileNeuralNetwork.AssemblyInfo.cs
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\obj\Release\netcoreapp2.1\ThermopileNeuralNetwork.dll
+C:\Users\tvand\source\ThermopileNeuralNetwork\ThermopileNeuralNetwork\obj\Release\netcoreapp2.1\ThermopileNeuralNetwork.pdb

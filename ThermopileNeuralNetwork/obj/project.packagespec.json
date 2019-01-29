@@ -1,0 +1,51 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "C:\\Users\\tvand\\source\\ThermopileNeuralNetwork\\ThermopileNeuralNetwork\\ThermopileNeuralNetwork.csproj",
+    "projectName": "ThermopileNeuralNetwork",
+    "projectPath": "C:\\Users\\tvand\\source\\ThermopileNeuralNetwork\\ThermopileNeuralNetwork\\ThermopileNeuralNetwork.csproj",
+    "outputPath": "C:\\Users\\tvand\\source\\ThermopileNeuralNetwork\\ThermopileNeuralNetwork\\obj\\",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "netcoreapp2.1"
+    ],
+    "frameworks": {
+      "netcoreapp2.1": {
+        "projectReferences": {}
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.1": {
+      "dependencies": {
+        "ConsoleTableExt": {
+          "target": "Package",
+          "version": "[2.0.2, )"
+        },
+        "Microsoft.ML": {
+          "target": "Package",
+          "version": "[0.9.0, )"
+        },
+        "Microsoft.NETCore.App": {
+          "suppressParent": "All",
+          "target": "Package",
+          "version": "[2.1.0, )",
+          "autoReferenced": true
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}
