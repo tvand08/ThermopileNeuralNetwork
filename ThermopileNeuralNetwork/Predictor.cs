@@ -20,16 +20,22 @@ namespace ThermopileNeuralNetwork
             
         }
 
-        public void Predict(Data data)
+        public PredictionResult Predict(Data data)
         {
             var predictedDistance = DistancePredictor.Predict(data);
             var predictedContainsPeople = ContainsPeoplePredictor.Predict(data);
             var predictedNumberOfPeople = NumberOfPeoplePredictor.Predict(data);
-            
-            Console.WriteLine("Actual Contains People: {0}  Predicted Contains People: {1}",data.ContainsPeople,predictedContainsPeople.ContainsPeople);
-            Console.WriteLine("Actual Number Of People: {0}  Predicted Number of People: {1}",data.NumberOfPeople,predictedNumberOfPeople.NumberOfPeople);
-            Console.WriteLine("Actual Distance: {0}  Predicted Distance: {1}",data.Distance,predictedDistance.Distance);
-            Console.WriteLine();
+
+            return new PredictionResult()
+            {
+                ActualContainsPeople = data.ContainsPeople,
+                ActualNumberOfPeople = data.NumberOfPeople,
+                ActualDistance = data.Distance,
+                PredictionContainsPeople = predictedContainsPeople.ContainsPeople,
+                PredictionNumberOfPeople = predictedNumberOfPeople.NumberOfPeople - 1,
+                PredictionDistance = predictedDistance.Distance - 1
+            };
+         
         }
     }
 }

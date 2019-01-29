@@ -40,6 +40,17 @@ namespace ThermopileNeuralNetwork
             public UInt32 Distance { get; set; }
         }
 
+        public class PredictionResult
+        {
+            public bool ActualContainsPeople { get; set; }
+            public int ActualNumberOfPeople { get; set; }
+            public int ActualDistance { get; set; }
+            
+            public bool PredictionContainsPeople { get; set; }
+            public uint PredictionNumberOfPeople { get; set; }
+            public uint PredictionDistance { get; set; }
+        }
+
         public static List<Data> LoadTrainingData(FileData file)
         {
             var data = new List<Data>();

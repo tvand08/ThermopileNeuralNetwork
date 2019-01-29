@@ -45,12 +45,37 @@ namespace ThermopileNeuralNetwork
             }
 
             data = RandomPermutation(data);
+            int incorrectContainsPeople = 0;
+            int incorrectNumberOfPeople = 0;
+            int incorrectDistance = 0;
             foreach (var d in data)
             {
-                predictor.Predict(d);
+                var result = predictor.Predict(d);
+                if (result.ActualContainsPeople != result.PredictionContainsPeople)
+                {
+                    incorrectContainsPeople++;
+                }
+                if (result.ActualNumberOfPeople != result.PredictionNumberOfPeople)
+                {
+                    incorrectNumberOfPeople++;
+                }
+                if (result.ActualDistance != result.PredictionDistance)
+                {
+                    incorrectDistance++;
+                }
+                Console.WriteLine("Actual Contains People: {0}  Predicted Contains People: {1}",result.ActualContainsPeople,result.PredictionContainsPeople);
+                Console.WriteLine("Actual Number Of People: {0}  Predicted Number of People: {1}",result.ActualNumberOfPeople,result.PredictionNumberOfPeople);
+                Console.WriteLine("Actual Distance: {0}  Predicted Distance: {1}",result.ActualDistance,result.PredictionDistance);
+                Console.WriteLine();
             }
+            Console.WriteLine();
+            Console.WriteLine("Testing Results");
+            Console.WriteLine("Incorrect Contains People: {0}/{1}  {2}%",incorrectContainsPeople,data.Count,(double)incorrectDistance/(double)data.Count);
+            Console.WriteLine("Incorrect Number of People: {0}/{1}  {2}%",incorrectNumberOfPeople,data.Count,(double)incorrectDistance/(double)data.Count);
+            Console.WriteLine("Incorrect Distance: {0}/{1}  {2}%",incorrectDistance,data.Count,(double)incorrectDistance/(double)data.Count);
+            Console.WriteLine();
             Console.WriteLine("=========== Finished Consuming Model =============");
-
+            
         }
 
         private static void SaveModelAsZip(MLContext context, ITransformer model)
