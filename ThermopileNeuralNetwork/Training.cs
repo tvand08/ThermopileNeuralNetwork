@@ -11,143 +11,194 @@ namespace ThermopileNeuralNetwork
 {
     public class Training
     {
-        public static ITransformer TrainContainsPeople(MLContext context)
+        public enum TrainingAlgorithm
         {
-            List<DataControl.Data> data = new List<DataControl.Data>();
-            
-            
-            foreach (var file in Constants.FILES)
+            STOCHASTIC_DUAL_COORDINATE_ASCENT,
+            LOGISTIC_REGRESSION,
+            NAIVE_BAYES,
+            BINARY_STOCHASTIC_DUAL_COORDINATE_ASCENT,
+            FAST_TREE,
+            STOCHASTIC_GRADIENT_DESCENT
+        }
+
+        private readonly IDataView trainData;
+        private readonly IDataView evalData;
+        private readonly MLContext context;
+
+        public Training(MLContext context)
+        {
+            this.context = context;
+            List<DataControl.Data> tData = new List<DataControl.Data>();
+            List<DataControl.Data> eData = new List<DataControl.Data>();
+
+            foreach (var file in DataControl.FILES)
             {
                 var tmp = DataControl.LoadTrainingData(file);
-                data.AddRange(tmp.Take(tmp.Count/2));
+                tData.AddRange(tmp.Take(tmp.Count / 2));
+                eData.AddRange(tmp.Skip(tmp.Count / 2).Take(tmp.Count / 2));
             }
 
-            var trainData = context.CreateStreamingDataView<DataControl.Data>(data);
+            trainData = context.CreateStreamingDataView<DataControl.Data>(tData);
+            evalData  = context.CreateStreamingDataView<DataControl.Data>(eData);
+        }
 
+        public ITransformer TrainModel(TrainingAlgorithm algorithm, DataControl.TrainingOptions options)
+        {
+            switch (algorithm)
+            {
+                case TrainingAlgorithm.LOGISTIC_REGRESSION:
+                    return LogisticRegression(options);
+
+                case TrainingAlgorithm.NAIVE_BAYES:
+                    return NaiveBayes(options);
+
+                case TrainingAlgorithm.BINARY_STOCHASTIC_DUAL_COORDINATE_ASCENT:
+                    return BinaryStochasticDualCoordinateAscent(options);
+
+                case TrainingAlgorithm.FAST_TREE:
+                    return FastTree(options);
+
+                case TrainingAlgorithm.STOCHASTIC_DUAL_COORDINATE_ASCENT:
+                    return StochasticDualCoordinateAscent(options);
+
+                case TrainingAlgorithm.STOCHASTIC_GRADIENT_DESCENT:
+                    return StochasticGradientDescent(options);
+                default:
+                    return null;
+            }
+        }
+
+        private ITransformer StochasticDualCoordinateAscent(DataControl.TrainingOptions options)
+        {
+            var pipeline = context.Transforms.Conversion
+                .ConvertType(options.LabelColumn, options.LabelColumn, DataKind.R4)
+                .Append(context.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(
+                    labelColumn: options.LabelColumn,
+                    featureColumn: options.FeatureColumn,
+                    maxIterations: options.MaxIterations));
+            Console.WriteLine("========== Training Stochastic Dual Coordinate Ascent Model =========");
+            var model = pipeline.Fit(trainData);
+            Console.WriteLine("================= Finished Training ================");
+            Console.WriteLine();
+            return model;
+        }
+
+        private ITransformer LogisticRegression(DataControl.TrainingOptions options)
+        {
+            var pipeline = context.Transforms.Conversion
+                .ConvertType(options.LabelColumn, options.LabelColumn, DataKind.R4)
+                .Append(context.MulticlassClassification.Trainers.LogisticRegression(
+                    labelColumn: options.LabelColumn,
+                    featureColumn: options.FeatureColumn));
+
+            Console.WriteLine("============== Create and Train Logistic Regression Model ==============");
+            var model = pipeline.Fit(trainData);
+            Console.WriteLine("================= Finished Training ================");
+            Console.WriteLine();
+            return model;
+        }
+
+        private ITransformer NaiveBayes(DataControl.TrainingOptions options)
+        {
+            var pipeline = context.Transforms.Conversion
+                .ConvertType(options.LabelColumn, options.LabelColumn, DataKind.R4)
+                .Append(context.MulticlassClassification.Trainers.NaiveBayes(
+                    labelColumn: options.LabelColumn,
+                    featureColumn: options.FeatureColumn));
+
+            Console.WriteLine("============== Create and Train Logistic Regression Model ==============");
+            var model = pipeline.Fit(trainData);
+            Console.WriteLine("================= Finished Training ================");
+            Console.WriteLine();
+            return model;
+        }
+
+        private ITransformer BinaryStochasticDualCoordinateAscent(DataControl.TrainingOptions options)
+        {
+            var pipeline = context.BinaryClassification.Trainers.StochasticDualCoordinateAscent(
+                labelColumn: options.LabelColumn,
+                featureColumn: options.FeatureColumn,
+                maxIterations: options.MaxIterations
+            );
+
+            Console.WriteLine("============== Create and Train Averaged Perceptron Model ==============");
+            var model = pipeline.Fit(trainData);
+            Console.WriteLine("================= Finished Training ================");
+            Console.WriteLine();
+            return model;
+        }
+
+        private ITransformer FastTree(DataControl.TrainingOptions options)
+        {
+            var pipeline = context.BinaryClassification.Trainers.FastTree(
+                labelColumn: options.LabelColumn,
+                featureColumn: options.FeatureColumn,
+                learningRate: options.LearningRate
+            );
+
+            Console.WriteLine("============== Create and Train Averaged Perceptron Model ==============");
+            var model = pipeline.Fit(trainData);
+            Console.WriteLine("================= Finished Training ================");
+            Console.WriteLine();
+            return model;
+        }
+
+        private ITransformer StochasticGradientDescent(DataControl.TrainingOptions options)
+        {
             var pipeline = context.BinaryClassification.Trainers.StochasticGradientDescent(
-                labelColumn: "ContainsPeople",
-                featureColumn: "Features");
+                labelColumn: options.LabelColumn,
+                featureColumn: options.FeatureColumn,
+                maxIterations: options.MaxIterations,
+                initLearningRate: options.LearningRate
+            );
 
-            Console.WriteLine("============== Create and Train ContainsPeople Model ==============");
+            Console.WriteLine("============== Create and Train Averaged Perceptron Model ==============");
             var model = pipeline.Fit(trainData);
             Console.WriteLine("================= Finished Training ================");
             Console.WriteLine();
             return model;
         }
 
-        public static ITransformer TrainNumberOfPeople(MLContext context)
+        public void Evaluate(ITransformer model, TrainingAlgorithm algorithm, string labelColumn)
         {
-            List<DataControl.Data> data = new List<DataControl.Data>();
-            
-            
-            foreach (var file in Constants.FILES)
+            switch (algorithm)
             {
-                var tmp = DataControl.LoadTrainingData(file);
-                data.AddRange(tmp.Take(tmp.Count/2));
+                case TrainingAlgorithm.STOCHASTIC_DUAL_COORDINATE_ASCENT:
+                case TrainingAlgorithm.LOGISTIC_REGRESSION:
+                case TrainingAlgorithm.NAIVE_BAYES:
+                    EvaluateMulticlass(model, labelColumn);
+                    break;
+                case TrainingAlgorithm.BINARY_STOCHASTIC_DUAL_COORDINATE_ASCENT:
+                case TrainingAlgorithm.FAST_TREE:
+                case TrainingAlgorithm.STOCHASTIC_GRADIENT_DESCENT:
+                    EvaluateBinary(model, labelColumn);
+                    break;
             }
-
-            var trainData = context.CreateStreamingDataView<DataControl.Data>(data);
-
-            var pipeline = context.Transforms.Conversion.ConvertType("NumberOfPeople","NumberOfPeople",DataKind.R4)
-                .Append(context.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(
-                labelColumn: "NumberOfPeople",
-                featureColumn: "Features"));
-
-            Console.WriteLine("============== Create and Train NumberOfPeople Model ==============");
-            var model = pipeline.Fit(trainData);
-            Console.WriteLine("================= Finished Training ================");
-            Console.WriteLine();
-            return model;
         }
 
-        public static ITransformer TrainDistance(MLContext context)
+        private void EvaluateBinary(ITransformer model, string labelColumn)
         {
-            List<DataControl.Data> data = new List<DataControl.Data>();
-            
-            
-            foreach (var file in Constants.FILES)
-            {
-                var tmp = DataControl.LoadTrainingData(file);
-                data.AddRange(tmp.Take(tmp.Count/2));
-            }
-            
-            var trainData = context.CreateStreamingDataView<DataControl.Data>(data);
 
-            var pipeline = context.Transforms.Conversion.ConvertType("Distance","Distance",DataKind.R4)
-                .Append(context.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(
-                            labelColumn: "Distance",
-                            featureColumn: "Features"));
+            var predictions = model.Transform(evalData);
 
-            Console.WriteLine("============== Create and Train Distance Model ==============");
-            var model = pipeline.Fit(trainData);
-            Console.WriteLine("================= Finished Training ================");
+            var metrics = context.BinaryClassification.EvaluateNonCalibrated(predictions, labelColumn);
+
             Console.WriteLine();
-            return model;
-        }
-        
-        public static void EvaluateContainsPeople(MLContext context, ITransformer model, List<FileData> fileData)
-        {
-            List<DataControl.Data> data = new List<DataControl.Data>();
-
-            foreach (var file in fileData)
-            {
-                var tmp = DataControl.LoadTrainingData(file);
-                data.AddRange(tmp.Skip(tmp.Count/2).Take(tmp.Count/2));
-            }
-            var trainData = context.CreateStreamingDataView<DataControl.Data>(data);
-
-            var predictions = model.Transform(trainData);
-
-            var metrics = context.BinaryClassification.EvaluateNonCalibrated(predictions, "ContainsPeople");
-            
-            Console.WriteLine();
-            Console.WriteLine("Model quality metrics evaluation");
+            Console.WriteLine("Binary Classification Model evaluation for {0}", labelColumn);
             Console.WriteLine("--------------------------------");
             Console.WriteLine($"Accuracy: {metrics.Accuracy:P2}");
             Console.WriteLine($"Auc: {metrics.Auc:P2}");
             Console.WriteLine($"F1Score: {metrics.F1Score:P2}");
         }
 
-        public static void EvaluateNumberOfPeople(MLContext context, ITransformer model, List<FileData> fileData)
+        private void EvaluateMulticlass(ITransformer model, string labelColumn)
         {
-            List<DataControl.Data> data = new List<DataControl.Data>();
+            var predictions = model.Transform(evalData);
 
-            foreach (var file in fileData)
-            {
-                var tmp = DataControl.LoadTrainingData(file);
-                data.AddRange(tmp.Skip(tmp.Count/2).Take(tmp.Count/2));
-            }
-            var trainData = context.CreateStreamingDataView<DataControl.Data>(data);
-
-            var predictions = model.Transform(trainData);
-
-            var metrics = context.MulticlassClassification.Evaluate(predictions, "NumberOfPeople");
+            var metrics = context.MulticlassClassification.Evaluate(predictions, labelColumn);
 
             Console.WriteLine();
-            Console.WriteLine("NumberOfPeople metrics evaluation");
-            Console.WriteLine("--------------------------------");
-            Console.WriteLine($"Accuracy Macro: {metrics.AccuracyMacro}");
-            Console.WriteLine($"Accuracy Micro: {metrics.AccuracyMicro}");
-            Console.WriteLine($"LogLossReduction: {metrics.LogLossReduction}");
-        }
-        
-        public static void EvaluateDistance(MLContext context, ITransformer model, List<FileData> fileData)
-        {
-            List<DataControl.Data> data = new List<DataControl.Data>();
-
-            foreach (var file in fileData)
-            {
-                var tmp = DataControl.LoadTrainingData(file);
-                data.AddRange(tmp.Skip(tmp.Count/2).Take(tmp.Count/2));
-            }
-            var trainData = context.CreateStreamingDataView<DataControl.Data>(data);
-
-            var predictions = model.Transform(trainData);
-
-            var metrics = context.MulticlassClassification.Evaluate(predictions, "Distance");
-
-            Console.WriteLine();
-            Console.WriteLine("Distance metrics evaluation");
+            Console.WriteLine("Multiclass metrics evaluation for {0}", labelColumn);
             Console.WriteLine("--------------------------------");
             Console.WriteLine($"Accuracy Macro: {metrics.AccuracyMacro}");
             Console.WriteLine($"Accuracy Micro: {metrics.AccuracyMicro}");

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\tvand\.Rider2018.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\tvand\.Rider2018.3\system\resharper-host\Local\Transient\ReSharperHost\v183\SolutionCaches\_ThermopileNeuralNetwork.1574842411.00" t="ExcludeRecursive" />
+    <e p="C:\Users\tvand\.Rider2018.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\tvand\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_ThermopileNeuralNetwork.1574842411.00" t="ExcludeRecursive" />
     <e p="C:\Users\tvand\source\ThermopileNeuralNetwork" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="ThermopileNeuralNetwork" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
-        <e p="Constants.cs" t="Include" />
         <e p="data" t="Include">
           <e p="control" t="Include">
             <e p="1p3ft" t="Include" />
@@ -37,7 +36,13 @@
         </e>
         <e p="Predictor.cs" t="Include" />
         <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="PublishProfiles" t="Include">
+            <e p="FolderProfile.pubxml" t="Include" />
+          </e>
+        </e>
         <e p="ThermopileNeuralNetwork.csproj" t="IncludeRecursive" />
+        <e p="Trainers.md" t="Include" />
         <e p="Training.cs" t="Include" />
       </e>
       <e p="ThermopileNeuralNetwork.sln" t="IncludeFlat" />

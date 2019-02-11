@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "CommandLineParser/2.4.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/CommandLine.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {}
+        }
+      },
       "ConsoleTableExt/2.0.2": {
         "type": "package",
         "compile": {
@@ -1065,8 +1074,22 @@
     }
   },
   "libraries": {
+    "CommandLineParser/2.4.3": {
+      "sha512": "3/WpSCsHNo4aTSaNW9SnmSqRNDgR4meKVJn5anKZn/hR/lGnDp8HbDMu1/w2GXOXi2rAhREU1cNwQMtEtlR1mg==",
+      "type": "package",
+      "path": "commandlineparser/2.4.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "commandlineparser.2.4.3.nupkg.sha512",
+        "commandlineparser.nuspec",
+        "lib/netstandard2.0/CommandLine.dll",
+        "lib/netstandard2.0/CommandLine.xml"
+      ]
+    },
     "ConsoleTableExt/2.0.2": {
-      "sha512": "jMW+4qdfpmXZSg6b8Cwyl2VkQGrGdl/ak53nHzBckqF2KXqcxYhvL3AaQfbJIknaj1PZklD9FXncfnYGEkyndw==",
+      "sha512": "q2/19x2B3rYZRLBZURlTn9DQ7GGje9l/4Z9HrZLraMP3KRaw03nYlT5Ody9d8jfTQFmQpgoJxNOPFc0b1vq6bA==",
       "type": "package",
       "path": "consoletableext/2.0.2",
       "files": [
@@ -1682,7 +1705,6 @@
       "sha512": "MoATFm6YJyk5OdqDdxDWfKe5dkY3Cygu0wrpKPH/LbWtMmSuD/3G/JIInt9sIJN7hKQOFYCIb2UjLc2vO5byQQ==",
       "type": "package",
       "path": "newtonsoft.json/10.0.3",
-      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4161,6 +4183,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "CommandLineParser >= 2.4.3",
       "ConsoleTableExt >= 2.0.2",
       "Microsoft.ML >= 0.9.0",
       "Microsoft.NETCore.App >= 2.1.0"
@@ -4207,6 +4230,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "CommandLineParser": {
+            "target": "Package",
+            "version": "[2.4.3, )"
+          },
           "ConsoleTableExt": {
             "target": "Package",
             "version": "[2.0.2, )"

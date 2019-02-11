@@ -26,6 +26,10 @@
   "frameworks": {
     "netcoreapp2.1": {
       "dependencies": {
+        "CommandLineParser": {
+          "target": "Package",
+          "version": "[2.4.3, )"
+        },
         "ConsoleTableExt": {
           "target": "Package",
           "version": "[2.0.2, )"

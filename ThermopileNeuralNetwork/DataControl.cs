@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using CommandLine;
 using Microsoft.ML.Data;
 
 namespace ThermopileNeuralNetwork
@@ -51,6 +53,19 @@ namespace ThermopileNeuralNetwork
             public uint PredictionDistance { get; set; }
         }
 
+        public class TrainingOptions
+        {
+            public string FeatureColumn { get; set; }
+            public string LabelColumn { get; set; }
+            public int MaxIterations { get; set; } = 20;
+            public float LearningRate { get; set; } = 0.2f;
+        }
+
+        public class EvaluationOptions
+        {
+            public string LabelColumn { get; set; }
+        }
+        
         public static List<Data> LoadTrainingData(FileData file)
         {
             var data = new List<Data>();
@@ -73,5 +88,71 @@ namespace ThermopileNeuralNetwork
 
             return data;   
         }
+        
+        public static List<FileData> FILES = new List<FileData>()
+        {
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","control","1p3ft"),
+                containsPeople = true,
+                numberOfPeople = 1,
+                distance = 3
+            },
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","control","nothing"),
+                containsPeople = false,
+                numberOfPeople = 0,
+                distance = 0 
+            },
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","control","1p3ft"),
+                containsPeople = true,
+                numberOfPeople = 1,
+                distance = 3
+            },
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","distance","1p1ft"),
+                containsPeople = true,
+                numberOfPeople = 1,
+                distance = 1
+            },
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","distance","1p6ft"),
+                containsPeople = true,
+                numberOfPeople = 1,
+                distance = 6
+            },
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","qty","2p3ft"),
+                containsPeople = true,
+                numberOfPeople = 2,
+                distance = 3
+            },
+            new FileData()
+            {
+                filepath = Path.Combine(Environment.CurrentDirectory,"data","qty","3p3ft"),
+                containsPeople = true,
+                numberOfPeople = 3,
+                distance = 3
+            }
+        };
+
+        
+    }
+
+    public class FileData
+    {
+        public string filepath { get; set; }
+
+        public bool containsPeople { get; set; }
+
+        public int numberOfPeople { get; set; }
+
+        public int distance { get; set; }
     }
 }

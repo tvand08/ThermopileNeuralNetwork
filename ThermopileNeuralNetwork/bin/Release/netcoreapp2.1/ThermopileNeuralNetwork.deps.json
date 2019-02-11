@@ -1,18 +1,27 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "5167f97a34ebf6e56cd7e09c86face7f26eb976e"
+    "signature": "687ba54ea748ab88c043c4e9a7eb66dc091dbb4c"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
       "ThermopileNeuralNetwork/1.0.0": {
         "dependencies": {
+          "CommandLineParser": "2.4.3",
           "ConsoleTableExt": "2.0.2",
           "Microsoft.ML": "0.9.0"
         },
         "runtime": {
           "ThermopileNeuralNetwork.dll": {}
+        }
+      },
+      "CommandLineParser/2.4.3": {
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {
+            "assemblyVersion": "2.4.3.0",
+            "fileVersion": "2.4.3.0"
+          }
         }
       },
       "ConsoleTableExt/2.0.2": {
@@ -599,6 +608,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "CommandLineParser/2.4.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-U2FC9Y8NyIxxU6MpFFdWWu1xwiqz/61v/Doou7kmVjpeIEMLWyiNNkzNlSE84kyJ0O1LKApuEj5z48Ow0Hi4OQ==",
+      "path": "commandlineparser/2.4.3",
+      "hashPath": "commandlineparser.2.4.3.nupkg.sha512"
     },
     "ConsoleTableExt/2.0.2": {
       "type": "package",
